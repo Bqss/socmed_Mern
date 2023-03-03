@@ -19,7 +19,7 @@ export const register = async (req: Request, res: Response) => {
       });
       res.status(200).json("register is successfully");
     } catch (error: any | unknown) {
-      return res.status(401).json("username already in use");
+      return res.status(400).json(error);
     }
   });
 };
@@ -30,10 +30,10 @@ export const login = async (req: Request, res: Response) => {
   try {
     const user = await UserModel.findOne({ userName });
     if (!user) {
-      return res.status(404).json( "user not found");
+      return res.status(404).json("user not found");
     }
     const { password: hashedPassword } = user;
-    // checking password 
+    // checking password
     Bcrypt.compare(password, hashedPassword, (err: any, result: boolean) => {
       if (result) {
         const token = JWT.sign(
@@ -43,20 +43,35 @@ export const login = async (req: Request, res: Response) => {
           },
           env.JWT_SECRET_KEY,
           {
-            expiresIn : "1h"
+            expiresIn: "1h",
           }
         );
-        res.cookie("jwt_token", token,{
-          maxAge : 3600000,
-          httpOnly : true 
-        })
-        res.status(200).json("success login");
+        res.cookie("_tbm", token, {
+          httpOnly: true,
+          path:"/",
+          maxAge :  60 * 60 * 1000
+        });
+        res.sendStatus(200);
         
-      }else{
-        res.status(400).json( "the password is invalid" );
+      } else {
+        res.status(400).json("the password is invalid");
       }
     });
   } catch (error: any) {
     res.status(500).json({ error: error?.errors });
   }
 };
+
+export const authenticated = (req: Request, res: Response ) => {
+  const token =req.cookies?._tbm 
+  if(!token) return res.sendStatus(401);
+  try{
+    const decoded = JWT.verify(token,env.JWT_SECRET_KEY);
+    
+    res.sendStatus(200);
+  }catch(err){
+    res.clearCookie("_tbm");
+    return res.sendStatus(401);
+  }
+
+}

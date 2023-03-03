@@ -1,15 +1,17 @@
 import {createBrowserRouter} from "react-router-dom";
+import ProtectedRoute from "./components/hoc/protectedRoute";
+
 import { Home, Login, MyProfile, Register } from "./pages";
 
 
 export const route =  createBrowserRouter([
   {
     path : "/",
-    element : <Home/>
+    element : ProtectedRoute(Home)
   },
   {
     path : "/:username",
-    element : <MyProfile/>
+    element : ProtectedRoute(MyProfile)
   },
   {
     path : "/Login",

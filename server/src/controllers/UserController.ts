@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import UserModel from "./../models/UserModel.js";
 import dot from "dotenv";
 import { userInfo } from "os";
@@ -34,6 +34,25 @@ export const getAllUser = async (req: Request, res: Response) => {
     res.status(500).json({ error: err });
   }
 };
+
+
+export const getUserCrediental = async(req: Request,  res: Response) => {
+
+  const {userId} = req.body;
+  try {
+    const user = await UserModel.findById<any>(userId);
+    if (user) {
+      const { password, ...other } = user?._doc;
+      
+      res.status(200).json({...other });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err });
+  }
+
+}
 
 
 export const updateUser = async(req : Request, res: Response) => {

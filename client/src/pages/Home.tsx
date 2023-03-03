@@ -10,10 +10,21 @@ import NewPostModal from "../components/modal/ProfileModal";
 import FollowingsModal from "../components/modal/FollowingsModal";
 import Followings from "../components/organism/Followings";
 import Trendings from "../components/organism/Trendings";
+import { useQuery } from "react-query";
+import { getUserCrediental } from "../api/User";
+import { useDispatch } from "react-redux";
+import { setUser } from "../slices/UserSlice";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  
+  const dispatch = useDispatch();
 
+  useQuery("userCrediental", getUserCrediental,{
+    refetchOnWindowFocus : false,
+    onSuccess(data) {
+      dispatch(setUser({user : data}))
+    }
+  }); 
   const [isOpenNewPostModal, setIsOpenNewPostModal] = useState(false);
   const [isOpenFollowingModal, setIsOpenFollowingModal] = useState(false);
 

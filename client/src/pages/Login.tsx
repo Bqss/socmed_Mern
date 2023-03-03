@@ -1,6 +1,5 @@
-import React, { useReducer, useState } from "react";
 import MainLayout from "../layout/MainLayout";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/atoms";
@@ -8,9 +7,11 @@ import { useMutation } from "react-query";
 import { login } from "../api/Auth";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { TextInput } from "@mantine/core";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const test = useForm({
     initialValues: {
       userName: "",
@@ -24,7 +25,7 @@ const Login = () => {
   });
   const { mutate: tryLogin } = useMutation(login, {
     onSuccess() {
-      navigate("/");
+      navigate("/",{replace: true});
     },
     onError(error: any) {
       switch (error.response.status) {

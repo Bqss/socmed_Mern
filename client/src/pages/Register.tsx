@@ -7,32 +7,37 @@ import { Button } from "../components/atoms";
 import { useMutation } from "react-query";
 import { register } from "../api/Auth";
 import { AxiosError, AxiosResponse } from "axios";
+import { isNotEmpty, matches, useForm } from "@mantine/form";
+import { PasswordInput, TextInput } from "@mantine/core";
 
 const Register = () => {
-  const navigate = useNavigate();
-  const [fn, setFn] = useState("");
-  const [ln, setLn] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [passwordC, setPasswordC] = useState("");
+  const registerVal = useForm({
+    initialValues : {
+      fn: "",
+      ln: "",
+      userName: "",
+      password: "",
+      passwordC :""
+    },
+    validateInputOnChange: true,
+    validate : {
+      fn: isNotEmpty("firstName can't be empty"),
+      ln: isNotEmpty("lastName can't be empty"),
+      userName: isNotEmpty("userName can't be empty"),
+      password: matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,"Format Password is false"),
+      passwordC : (value, values) =>  value !== values.password ? "Password did not match": null
+    }
+  })
+
 
   const {mutateAsync, isLoading} = useMutation(register); 
 
 
-  const attemptRegister = (ev: React.FormEvent) => {
-    ev.preventDefault();
-    toast.promise(mutateAsync({
-      firstName : fn,
-      lastName: ln,
-      userName: username,
-      password
-    },{
+  const attemptRegister = (payload: any) => {
+    
+    toast.promise(mutateAsync(payload,{
       onSettled(){
-        setUsername("");
-        setPassword("");
-        setPasswordC("");
-        setFn("")
-        setLn("")
+        registerVal.reset();
       }
     }),{
       success : (data) => data ,
@@ -59,60 +64,47 @@ const Register = () => {
         </div>
         <div className="flex flex-col items-center  bg-white py-8 px-6 rounded-lg shadow-md ">
           <span className="text-2xl font-bold block ">Sign Up</span>
-          <form action="" className="flex flex-col gap-4 mt-10" onSubmit={attemptRegister}>
+          <form action="" className="flex flex-col gap-4 mt-10" onSubmit={registerVal.onSubmit((values) => attemptRegister({
+            firstName:  values.fn,
+            lastName: values.ln,
+            userName: values.userName,
+            password: values.password
+          }))}>
             <div className="flex gap-2">
-              <input
-                type="text"
-                name="fn"
-                id="fn"
-                value={fn}
-                onChange={(ev)=> setFn(ev.target.value)}
-                className="bg-gray-100 border focus:border-orange transition-colors duration-150 px-5 py-2 rounded-md"
-                placeholder="First Name"
+              <TextInput
+                classNames={{input: "focus:border-orange ring-2 ring-transparent focus:ring-orange/20"}}
+                placeholder="First name"
+                {...registerVal.getInputProps("fn")}
               />
-              <input
-                type="text"
-                name="ln"
-                value={ln}
-                onChange={(ev)=> setLn(ev.target.value)}
-                id="ln"
-                className="bg-gray-100 border focus:border-orange transition-colors duration-150 px-5 py-2 rounded-md"
-                placeholder="Last Name"
+              <TextInput
+                classNames={{input: "focus:border-orange ring-2 ring-transparent focus:ring-orange/20"}}
+                placeholder="Last name"
+                {...registerVal.getInputProps("ln")}
               />
             </div>
             <div>
-              <input
-                type="text"
-                name=""
-                id=""
-                value={username}
-                onChange={(ev)=> setUsername(ev.target.value)}
-                className="w-full bg-gray-100 border focus:border-orange transition-colors duration-150 px-5 py-2 rounded-md"
-                placeholder="Username"
+              <TextInput
+                classNames={{input: "focus:border-orange ring-2 ring-transparent focus:ring-orange/20"}}
+                placeholder="username"
+                {...registerVal.getInputProps("userName")}
               />
             </div>
             <div className="flex gap-2">
-              <input
-                type="password"
-                name="pw"
-                value={password}
-                onChange={(ev)=> setPassword(ev.target.value)}
-                id="pw"
-                className="bg-gray-100 border focus:border-orange transition-colors duration-150 px-5 py-2 rounded-md"
-                placeholder="Password"
+              <TextInput
+                type={"password"}
+                classNames={{input: "focus:border-orange ring-2 ring-transparent focus:ring-orange/20"}}
+                placeholder="password"
+                {...registerVal.getInputProps("password")}
               />
-              <input
-                type="password"
-                name="pwc"
-                value={passwordC}
-                onChange={(ev)=> setPasswordC(ev.target.value)}
-                id="pwc"
-                className="bg-gray-100 border focus:border-orange transition-colors duration-150 px-5 py-2 rounded-md"
-                placeholder="Password Confirm"
+              <TextInput
+                type={"password"}
+                classNames={{input: "focus:border-orange ring-2 ring-transparent focus:ring-orange/20"}}
+                placeholder="password confirm"
+                {...registerVal.getInputProps("passwordC")}
               />
             </div>
             <div className="flex mt-4 justify-center items-center gap-4 ">
-              <Link to={"/login"} className="text-blue-500 hover:underline">
+              <Link to={"/login"} className="text-sm text-blue-500 hover:underline">
                 Already have an account ?
               </Link>
               <Button className="px-6 py-2 rounded-md font-medium" disabled={isLoading}>

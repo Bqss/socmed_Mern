@@ -1,9 +1,10 @@
-import React from 'react'
+  import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { Search } from '../components/mollecules'
 import {AiOutlineSetting} from "react-icons/ai";
 import {IoMdNotificationsOutline} from "react-icons/io";
 import {HiOutlineChatBubbleLeftEllipsis,HiOutlineHome} from "react-icons/hi2";
+import {RxAvatar} from "react-icons/rx";
 
 
 
@@ -19,6 +20,9 @@ const Navbar = () => {
       <div className='flex justify-between w-80 '>
         <NavLink to={"/"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
           <HiOutlineHome className='w-6 h-6'/>
+        </NavLink>
+        <NavLink to={"/my-profile"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
+          <RxAvatar className='w-6 h-6'/>
         </NavLink>
         <NavLink to={"/setting"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
           <AiOutlineSetting className='w-6 h-6'/> 

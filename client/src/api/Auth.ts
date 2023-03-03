@@ -1,22 +1,30 @@
-import axios from "axios" ;
+import axios from "axios";
 
-export const api = axios.create({baseURL: "http://localhost:5000"});
+export const api = axios.create({
+  baseURL: "http://localhost:5000",
+  withCredentials: true,
+});
 
 interface LoginPayload {
-  userName: string,
-  password: string
+  userName: string;
+  password: string;
 }
-export const login = async(payload: LoginPayload) => {
-  const result = await api.post("/auth/login",payload);
+export const login = async (payload: LoginPayload) => {
+  const result = await api.post("/auth/login", payload);
   return result.data;
-}
+};
 
 interface RegisterPayload extends LoginPayload {
-  firstName: string,
-  lastName: string
+  firstName: string;
+  lastName: string;
 }
 
-export const register = async(payload: RegisterPayload) => {
-  const result = await api.post("/auth/register",payload);
+export const register = async (payload: RegisterPayload) => {
+  const result = await api.post("/auth/register", payload);
+  return result.data;
+};
+
+export const checkAuth = async () => {
+  const result = await api.get("/auth");
   return result.data;
 }

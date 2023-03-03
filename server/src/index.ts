@@ -19,7 +19,9 @@ expressApp.use(bodyParser.urlencoded({ extended: true }));
 expressApp.use(bodyParser.json({}));
 expressApp.use(cookieParser());
 expressApp.use(cors({
-  origin : "http://localhost:5173"
+  origin : "http://localhost:5173",
+  credentials: true,
+  optionsSuccessStatus : 200
 }))
 
 expressApp.use("/auth", AuthRoute);
