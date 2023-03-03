@@ -1,5 +1,4 @@
-import { BrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
-import { route } from "./routes";
+import { BrowserRouter, Route,  Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import { MantineProvider } from "@mantine/core";
 import store from "./store";

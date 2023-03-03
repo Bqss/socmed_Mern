@@ -16,14 +16,21 @@ const ReactQueryClientProvider : React.FC<ParentComponent> = ({children}) => {
         retry : false,
         onError(err){
           if(isAxiosError(err)){
-            
             if(err.response?.status == 401) {
-              console.log(err.response.status);
               return navigate("/login");
             }
           }
         },
-        
+      },
+      mutations : {
+        retry : false,
+        onError(err){
+          if(isAxiosError(err)){
+            if(err.response?.status == 401) {
+              return navigate("/login");
+            }
+          }
+        }
       }
     }
   })
