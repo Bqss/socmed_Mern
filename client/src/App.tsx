@@ -1,25 +1,34 @@
-import { useState } from "react";
-import { QueryClientProvider, QueryClient } from "react-query";
-import { RouterProvider } from "react-router-dom";
+import { BrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import { route } from "./routes";
 import { Provider } from "react-redux";
 import { MantineProvider } from "@mantine/core";
 import store from "./store";
-
-const client = new QueryClient();
+import ReactQueryClientProvider from "./providers/ReactQueryClientProvider";
+import { Home, Login, Register } from "./pages";
 
 function App() {
   return (
     <div className="App  bg-background min-h-screen  w-full">
-      <Provider store={store} >
+      <Provider store={store}>
         <MantineProvider>
-          <QueryClientProvider client={client}>
-            <RouterProvider router={route} />
-          </QueryClientProvider>
+          <BrowserRouter>
+            <ReactQueryClientProvider>
+              <Routes>
+                <Route path="/login" element={<Login/>}  />
+                <Route path="/register" element={<Register/>}  />
+                <Route path="/" element={<Home/>}/>
+              </Routes>
+            </ReactQueryClientProvider>
+          </BrowserRouter>
         </MantineProvider>
       </Provider>
     </div>
   );
 }
+
+
+// <ReactQueryClientProvider>
+//             {/* <RouterProvider router={route} /> */}
+//           </ReactQueryClientProvider>
 
 export default App;

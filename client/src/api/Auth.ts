@@ -1,9 +1,18 @@
-import axios from "axios";
+import axios, { AxiosError, isAxiosError } from "axios";
+
 
 export const api = axios.create({
   baseURL: "http://localhost:5000",
   withCredentials: true,
+  timeout: 1000
 });
+
+// api.interceptors.response.use(response => response , (error => {
+//   if(isAxiosError(error)&& error.response?.status == 401 ){
+//     return <Navigate to="/login"/>
+//   }
+// }))
+
 
 interface LoginPayload {
   userName: string;
