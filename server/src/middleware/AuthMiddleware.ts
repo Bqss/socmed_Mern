@@ -8,15 +8,15 @@ const authMiddleware: RequestHandler = (req, res, next) => {
   const cookie = req.cookies;
 
   if (!cookie?._tbm) return res.sendStatus(401);
-
   const secret = process.env.JWT_SECRET_KEY ?? "";
 
   try {
     const decoded = JWT.verify(cookie._tbm, secret) as JwtPayload;
-    req.body.userId = decoded?.userId;
+    req.body.userId =  decoded?.userId
+    req.body.isAdmin = decoded?.isAdmin
     next();
   } catch (err) {
-    res.clearCookie('_tbm')
+    res.clearCookie("_tbm");
     res.sendStatus(403);
   }
 };

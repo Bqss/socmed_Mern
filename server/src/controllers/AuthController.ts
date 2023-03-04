@@ -51,7 +51,7 @@ export const login = async (req: Request, res: Response) => {
           path:"/",
           maxAge :  60 * 60 * 1000
         });
-        res.sendStatus(200);
+        res.status(200).send({userId: user._id, userName: user.userName, profile: user.profilePicture});
         
       } else {
         res.status(400).json("the password is invalid");

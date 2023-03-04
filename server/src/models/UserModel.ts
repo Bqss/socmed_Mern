@@ -22,12 +22,13 @@ const userSchema = new Schema({
     type: Boolean,
     default: false
   },
-  profilePicture: Boolean,
-  coverPicture: Boolean,
+  profilePicture: String,
+  coverPicture: String,
   about: String,
   livesIn: String,
+  website: String,
   workAt: String,
-  relationShip: String,
+  relationship: String,
   followers: [],
   following: []
 },{
