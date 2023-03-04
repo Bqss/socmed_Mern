@@ -3,7 +3,8 @@ import { Provider } from "react-redux";
 import { MantineProvider } from "@mantine/core";
 import store from "./store";
 import ReactQueryClientProvider from "./providers/ReactQueryClientProvider";
-import { Home, Login, Register } from "./pages";
+import { Home, Login, MyProfile, Register } from "./pages";
+import MainLayout from "./layout/AuthedLayout";
 
 function App() {
   return (
@@ -15,7 +16,10 @@ function App() {
               <Routes>
                 <Route path="/login" element={<Login/>}  />
                 <Route path="/register" element={<Register/>}  />
-                <Route path="/" element={<Home/>}/>
+                <Route path="/" element={<MainLayout/>}>
+                  <Route path="" element ={<Home/>}/>
+                  <Route path="/:id" element={<MyProfile/>} />
+                </Route>
               </Routes>
             </ReactQueryClientProvider>
           </BrowserRouter>

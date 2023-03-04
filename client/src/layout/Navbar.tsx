@@ -21,7 +21,7 @@ const Navbar = () => {
         <NavLink to={"/"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
           <HiOutlineHome className='w-6 h-6'/>
         </NavLink>
-        <NavLink to={"/my-profile"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
+        <NavLink to={"/:username"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
           <RxAvatar className='w-6 h-6'/>
         </NavLink>
         <NavLink to={"/setting"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>

@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { ModalComponent } from "../../types/Props";
 import { Following } from "../atoms";
 
-const FollowingsModal = ({ isOpen, onClose }: ModalComponent) => {
+const FollowingsModal = ({ isOpen, onClose, className }: ModalComponent) => {
   const { data: following, isFetching } = useQuery(
     "following",
     async () => {
@@ -20,6 +20,7 @@ const FollowingsModal = ({ isOpen, onClose }: ModalComponent) => {
       opened ={isOpen}
       onClose = {onClose}
       radius="md"
+      className={className}
     >
       <div className="">
         <div className="mt-8 flex flex-col sticky top-10 ">

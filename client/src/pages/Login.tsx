@@ -1,4 +1,4 @@
-import MainLayout from "../layout/MainLayout";
+import MainLayout from "../layout/AuthedLayout";
 import toast from "react-hot-toast";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,11 +7,13 @@ import { useMutation } from "react-query";
 import { login } from "../api/Auth";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { TextInput } from "@mantine/core";
-import { useDispatch } from "react-redux";
+
+import GuestLayout from "../layout/GuestLayout";
+
+
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const test = useForm({
     initialValues: {
       userName: "",
@@ -44,7 +46,7 @@ const Login = () => {
   });
 
   return (
-    <MainLayout withNavbar={false}>
+    <GuestLayout >
       
       <div className="w-full flex items-center h-screen justify-center space-x-10">
         <div className="flex items-center gap-4">
@@ -93,7 +95,7 @@ const Login = () => {
           </form>
         </div>
       </div>
-    </MainLayout>
+    </GuestLayout>
   );
 };
 

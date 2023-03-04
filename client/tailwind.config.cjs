@@ -21,6 +21,9 @@ module.exports = {
         schedule: "#E1AE4A",
         background: "#f3f3f3"
       },
+      height : {
+        sidebar : "calc(100vh - 6rem) "
+      }
 
     },
   },

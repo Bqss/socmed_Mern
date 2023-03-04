@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MainLayout from "../layout/MainLayout";
+import MainLayout from "../layout/AuthedLayout";
 import toast, {Toaster} from "react-hot-toast";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";

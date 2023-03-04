@@ -8,7 +8,7 @@ import Trendings from "../components/organism/Trendings";
 import { MainContent, Sidebar } from "../layout";
 import profile from "../assets/profileImg.jpg";
 import { BiArrowBack } from "react-icons/bi";
-import MainLayout from "../layout/MainLayout";
+import MainLayout from "../layout/AuthedLayout";
 import { Button } from "../components/atoms";
 import { BsCalendar2Date } from "react-icons/bs";
 import { Tabs } from "@mantine/core";
@@ -25,25 +25,20 @@ const MyProfile = () => {
     { refetchOnWindowFocus: false, initialData: [] }
   );
   const [isEditProfile, setIsEditProfile] = useState(false);
-  const [isOpenFollowingModal, setIsOpenFollowingModal] = useState(false);
 
   const closeModal = () => {
-    setIsOpenFollowingModal(false);
+    setIsEditProfile(false);
   };
 
-  const [activeTab, setActiveTab] = useState<string|null>("tweets"); 
+  const [activeTab, setActiveTab] = useState<string | null>("tweets");
 
   return (
-    <MainLayout>
-      <EditProfileModal isOpen={isEditProfile} onClose={() => setIsEditProfile(false)}/>
-      <FollowingsModal isOpen={isOpenFollowingModal} onClose={closeModal} />
-      <Sidebar >
-        <Followings openModal={() => setIsOpenFollowingModal(true)} />
-      </Sidebar>
+    <>
+      <EditProfileModal isOpen={isEditProfile} onClose={closeModal}/>
       <MainContent className="mx-5 -mt-14">
         <div className=" h-[50vh]">
           <div className="bg-white p-4 flex items-center gap-2">
-            <Link to="/" className="p-2 rounded-full hover:bg-gray-200" >
+            <Link to="/" className="p-2 rounded-full hover:bg-gray-200">
               <BiArrowBack className="w-4 h-4" />
             </Link>
             <span className="font-bold">Basofi_Riswanto</span>
@@ -52,7 +47,12 @@ const MyProfile = () => {
           <div className="px-16 ">
             <div className="flex relative justify-between items-end -mt-12 ">
               <img src={profile} alt="" className="w-24 h-24 rounded-full" />
-              <Button onClick={()=> setIsEditProfile(true)} className="px-5 py-2 font-medium">Edit Profile</Button>
+              <Button
+                onClick={() => setIsEditProfile(true)}
+                className="px-5 py-2 font-medium"
+              >
+                Edit Profile
+              </Button>
             </div>
             <div className="mt-4 flex flex-col gap-1">
               <span className="text-2xl font-bold">Basofi Riswanto</span>
@@ -71,7 +71,13 @@ const MyProfile = () => {
               </div>
             </div>
           </div>
-          <Tabs defaultValue="gallery" color={"orange"} className="mt-8" value={activeTab} onTabChange={setActiveTab}>
+          <Tabs
+            defaultValue="gallery"
+            color={"orange"}
+            className="mt-8"
+            value={activeTab}
+            onTabChange={setActiveTab}
+          >
             <Tabs.List grow position="apart">
               <Tabs.Tab value="tweets">Tweets</Tabs.Tab>
               <Tabs.Tab value="tweets & replies">Tweets & replies</Tabs.Tab>
@@ -97,10 +103,7 @@ const MyProfile = () => {
           </Tabs>
         </div>
       </MainContent>
-      <Sidebar >
-        <Trendings />
-      </Sidebar>
-    </MainLayout>
+    </>
   );
 };
 

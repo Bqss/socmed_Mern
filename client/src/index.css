@@ -13,4 +13,5 @@
   button{
     @apply transition-colors duration-150;
   }
+  
 }
