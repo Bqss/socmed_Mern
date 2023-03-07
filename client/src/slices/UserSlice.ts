@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getUserById, getUserCrediental } from "../api/User";
+import { getUserById, getUserCrediental } from "../api/services/User";
 import { RootState } from "../store";
 
 const initialState: any = {

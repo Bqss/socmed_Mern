@@ -12,8 +12,8 @@
   livesIn? : string,
   workAt?: string,
   relationship?: "married" | "single" | undefined
-  following : Array<User>,
-  followers : Array<User>,
+  following : Array<string>,
+  followers : Array<string>,
   createdAt : string,
   updatedAt : string
  }

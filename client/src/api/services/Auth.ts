@@ -1,10 +1,8 @@
 import axios, { AxiosError, isAxiosError } from "axios";
+import { api, privateApi } from "../instances";
 
 
-export const api = axios.create({
-  baseURL: "http://localhost:5000",
-  withCredentials: true,
-});
+
 
 // api.interceptors.response.use(response => response , (error => {
 //   if(isAxiosError(error)&& error.response?.status == 401 ){
@@ -18,7 +16,7 @@ interface LoginPayload {
   password: string;
 }
 export const login = async (payload: LoginPayload) => {
-  const result = await api.post("/auth/login", payload);
+  const result = await privateApi.post("/auth/login", payload);
   return result.data;
 };
 
@@ -32,7 +30,4 @@ export const register = async (payload: RegisterPayload) => {
   return result.data;
 };
 
-export const checkAuth = async () => {
-  const result = await api.get("/auth");
-  return result.data;
-}
+

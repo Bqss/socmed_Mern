@@ -4,7 +4,7 @@ import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/atoms";
 import { useMutation } from "react-query";
-import { login } from "../api/Auth";
+import { login } from "../api/services/Auth";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { TextInput } from "@mantine/core";
 

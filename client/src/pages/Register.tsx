@@ -1,14 +1,13 @@
-import { useState } from "react";
-import MainLayout from "../layout/AuthedLayout";
 import toast, {Toaster} from "react-hot-toast";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/atoms";
 import { useMutation } from "react-query";
-import { register } from "../api/Auth";
-import { AxiosError, AxiosResponse } from "axios";
+import { register } from "../api/services/Auth";
+import { AxiosError } from "axios";
 import { isNotEmpty, matches, useForm } from "@mantine/form";
-import { PasswordInput, TextInput } from "@mantine/core";
+import {  TextInput } from "@mantine/core";
+import GuestLayout from "../layout/GuestLayout";
 
 const Register = () => {
   const registerVal = useForm({
@@ -48,7 +47,7 @@ const Register = () => {
   }
   
   return (
-    <MainLayout withNavbar={false}>
+    <GuestLayout >
       
       <div className="w-full flex items-center h-screen justify-center space-x-10">
         <div className="flex items-center gap-4">
@@ -114,7 +113,7 @@ const Register = () => {
           </form>
         </div>
       </div>
-    </MainLayout>
+    </GuestLayout>
   );
 };
 

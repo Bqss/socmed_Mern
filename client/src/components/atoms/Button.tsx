@@ -3,7 +3,7 @@ import { ParentComponent } from '../../types/Props'
 
 
 interface ButtonProps extends ParentComponent{
-  onClick? : () => void,
+  onClick? : (ev: React.MouseEvent) => void,
   disabled?: boolean,
   type?: "submit"
 }

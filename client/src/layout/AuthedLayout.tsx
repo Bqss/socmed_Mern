@@ -13,7 +13,7 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Background from "../components/mollecules/Background";
 import { useQuery } from "react-query";
-import { getUserCrediental } from "../api/User";
+import { getUserCrediental } from "../api/services/User";
 import { AxiosResponse } from "axios";
 import { setUser } from "../slices/UserSlice";
 import { ProfileHint } from "../components/mollecules";
@@ -29,13 +29,8 @@ const AuthedLayout = ({
   children,
 }: LayoutProps) => {
   const dispatch = useDispatch();
-  const {
-    data: userData,
-    isLoading,
-    isFetching,
-  } = useQuery("userData", getUserCrediental, {
-    onSuccess(data: AxiosResponse) {
-      console.log(data);
+  const { isLoading, isFetching } = useQuery("userData", getUserCrediental, {
+    onSuccess(data) {
       dispatch(setUser({ user: data }));
     },
   });
@@ -68,7 +63,7 @@ const AuthedLayout = ({
         }}
       />
 
-      <div className=" max-w-[1620px] z-[1] relative  mx-auto ">
+      <div className=" max-w-[1525px] z-[1] relative  mx-auto ">
         {withNavbar && <Navbar />}
         <div className="flex mx-5 ">
           <NewPostModal isOpen={isOpenNewPostModal} onClose={closeModal} />

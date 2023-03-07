@@ -39,24 +39,16 @@ export const getUserCrediental = async (req: Request, res: Response) => {
   try {
     const user = await UserModel.findById<any>(userId);
     if (user) {
-      const {
-        password,
-        followers,
-        userName,
-        firstName,
-        lastName,
-        _id,
-        profilePicture,
-        ...rest
-      } = user?._doc;
+      const { userName, firstName, followers, following , lastName, profilePicture, _id } = user?._doc;
 
       res.status(200).json({
-        followers: followers.length >= 4 ? followers.slice(3) : followers,
         userName,
         firstName,
         lastName,
-        _id,
+        followers,
+        following,
         profilePicture,
+        _id,
       });
     } else {
       res.status(404).json({ message: "User not found" });
@@ -68,29 +60,30 @@ export const getUserCrediental = async (req: Request, res: Response) => {
 
 export const getUserFollower: RequestHandler = async (req, res) => {
   const userId = req.body.userId;
-  const limit = parseInt(req.params.limit)||4;
-  const cursor = parseInt(req.params.cursor)||1;
+  const limit = parseInt(req.params.limit) || 4;
+  const cursor = parseInt(req.params.cursor) || 1;
 
-
-  const start = (cursor -1 ) * limit;
+  const start = (cursor - 1) * limit;
 
   try {
-    const following = await UserModel.findOne({ _id: userId }, [
-      "following",
-      "-_id",
-    ]);
-    const total = await UserModel.findOne({ _id: userId }, [
+    const total = await UserModel.findOne({_id: userId},[
       "followers",
       "-_id",
-    ]).where({ followers: { $nin: following?.following } }).countDocuments();
-    const followers = await UserModel.findOne({ _id: userId},[
+    ]).countDocuments();
+
+    const followers = await UserModel.findOne({ _id: userId }, [
       "followers",
       "-_id",
-    ]).where({ followers: { $nin: following?.following }}).skip(start).limit(limit).sort({following: "asc"})
+    ])
+      .skip(start)
+      .limit(limit)
+      .sort({ following: "asc" });
+
+    
     res.status(200).json({
       data: followers?.followers,
-      currentCursor: cursor ,
-      totalCursor : Math.ceil(total/limit),
+      prevId: cursor > 1 ? cursor - 1 : null,
+      nextId: cursor < Math.ceil(total / limit)-1 ? cursor +1 :null,
     });
   } catch (err) {
     console.log(err);
