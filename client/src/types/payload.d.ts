@@ -26,18 +26,28 @@ interface PaginatedResult<T> {
 }
 
 interface NewPost {
-  media?: File,
-  desc: string
+  media?: File;
+  desc: string;
 }
 
 interface Post {
-  media : string,
-  creator : string,
-  desc: string,
-  createdAt: string,
-  updatedAt: string,
-  likes: Array<String>
+  media: string;
+  creator: string;
+  desc: string;
+  comments: Comment[];
+  createdAt: string;
+  updatedAt: string;
+  likes: Array<string>;
+  _id: string;
 }
 
+interface Comment {
+  userId : string;
+  comment: string;
+  _id: string;
+  createdAt: string;
+  updatedAt: string;
+  replyComment: [];
+}
 //  type Followers = Array<User>
 //  type Following = Array<User

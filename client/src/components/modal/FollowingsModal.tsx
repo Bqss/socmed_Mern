@@ -23,6 +23,7 @@ const FollowingsModal = ({ isOpen, onClose, className }: ModalComponent) => {
       opened ={isOpen}
       onClose = {onClose}
       radius="md"
+   
       className={className}
     >
       <div className="">

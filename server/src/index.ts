@@ -1,6 +1,6 @@
 import express from "express";
 import { Socket } from "socket.io";
-import fileUpload from "express-fileupload"
+import fileUpload from "express-fileupload";
 import http from "http";
 import bodyParser from "body-parser";
 import dot from "dotenv";
@@ -20,17 +20,21 @@ const { env }: any = process;
 const expressApp = express();
 const server = http.createServer(expressApp);
 
-expressApp.use(bodyParser.urlencoded({ extended: true , limit : 500000 }));
-expressApp.use(bodyParser.json({
-  limit : 500000
-}));
+expressApp.use(bodyParser.urlencoded({ extended: true, limit: 500000 }));
+expressApp.use(
+  bodyParser.json({
+    limit: 500000,
+  })
+);
 expressApp.use(cookieParser());
-expressApp.use(fileUpload({
-  useTempFiles : true,
-  limits : {
-    fileSize : 100 * 1024 * 1024
-  }
-}))
+expressApp.use(
+  fileUpload({
+    useTempFiles: true,
+    limits: {
+      fileSize: 100 * 1024 * 1024,
+    },
+  })
+);
 expressApp.use(
   cors({
     origin: "http://localhost:5173",
@@ -46,7 +50,11 @@ expressApp.use("/post", authMiddleware, postRoute);
 
 mongoose.set("strictQuery", false);
 mongoose
-  .connect(env?.MONGO_DB_URL)
+  .connect(env?.MONGO_DB_URL, {
+    ssl: true,
+    sslValidate: true,
+
+  })
   .then(() => {
     server.listen(5000, () => {
       console.log("listening on port :  " + 5000);

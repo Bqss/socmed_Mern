@@ -1,13 +1,19 @@
 import mongoose, { Schema } from "mongoose";
+import { commentSchema } from "./CommentModel.js";
 
-const postSchema = new Schema({
+export const postSchema = new Schema({
   creator: { type: String, required: true },
   desc: { type: String, required: true },
+  media: String,
   likes: {
-    type: [{ String }],
+    type: [String],
     default: []
   },
-  media: String,
+  comments: {
+    type: [commentSchema],
+    default: []
+  },
+  
 },{timestamps: true});
 
 

@@ -6,21 +6,24 @@ import { useDispatch } from "react-redux";
 import { useQuery } from "react-query";
 
 const Home = () => {
-  const dispatch = useDispatch();
-  const {data: posts =[] , isLoading} = useQuery(["posts"],PostApi.getAllPost)
+
+  const {data: posts =[] , isLoading} = useQuery(["posts"],PostApi.getAllPost,{
+    refetchInterval : 60 * 1000,
+    refetchOnWindowFocus : true
+  })
 
   return (
     <>
       <MainContent>
         <div className="mx-6">
           <NewPost />
-          <div className="flex flex-col mt-6 gap-4">
+          <div className="flex flex-col mt-6 space-y-6">
             {posts?.map((post : any, i: number) => <Post key={i} data={post}/>)}
           </div>
         </div>
       </MainContent>
     </>
-  );
+  );  
 };
 
 export default Home;

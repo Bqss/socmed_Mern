@@ -1,8 +1,7 @@
 import { useState } from "react";
 import profile from "../../assets/profileImg.jpg";
-import { IoImageOutline, IoLocationOutline } from "react-icons/io5";
-import { AiOutlineVideoCameraAdd } from "react-icons/ai";
-import { RiCalendarCheckLine } from "react-icons/ri";
+import { IoImageOutline} from "react-icons/io5";
+import toast from "react-hot-toast"
 import { Button } from "../atoms";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { HiOutlineXMark } from "react-icons/hi2";
@@ -10,13 +9,15 @@ import { useRef } from "react";
 import PostApi from "../../api/services/Post";
 import { TextInput } from "@mantine/core";
 import { useMutation, useQueryClient } from "react-query";
+import { AiOutlineVideoCameraAdd } from "react-icons/ai";
 
 const NewPost = ({ className }: { className?: string }) => {
   const imageInput = useRef<any>();
   const videoInput = useRef<any>();
+  const [media, setMedia] = useState<any>();
   const queryClient = useQueryClient();
-
-  const {mutate : uploadPost, isLoading} = useMutation(PostApi.createPost);
+  const {mutate : uploadPost, isLoading: isUploading} = useMutation(PostApi.createPost);
+  // const {mutate : uploadPost, isLoading: isUploading} = useMutation(PostApi.createPost);
 
 
   const post = useForm({
@@ -29,7 +30,7 @@ const NewPost = ({ className }: { className?: string }) => {
     },
   });
 
-  const [media, setMedia] = useState<any>();
+  
 
   const handleMediaChange = (ev: React.ChangeEvent<any>) => {
     const media = ev.target.files[0];
@@ -39,8 +40,9 @@ const NewPost = ({ className }: { className?: string }) => {
   const sharePost = (values: any) => {
     uploadPost({ media, desc: values.description },{
       onSuccess : (data) => {
-        console.log(data);
-        queryClient.invalidateQueries("")
+        setMedia(null);
+        toast.success(data.message);
+        queryClient.invalidateQueries("posts");
       }
     });
   };
@@ -86,33 +88,40 @@ const NewPost = ({ className }: { className?: string }) => {
           />
           <button
             className="inline-flex gap-2 text-green-500"
-            onClick={() => imageInput.current?.click()}
+            onClick={(ev) => {
+              ev.preventDefault();
+              imageInput.current?.click()
+            }}
           >
             <IoImageOutline className="w-6 h-6" />
             <span>Photo</span>
           </button>
           <button
             className="inline-flex gap-2 text-blue-500"
-            onClick={() => videoInput.current?.click()}
+            onClick={(ev) => {
+              ev.preventDefault();
+              videoInput.current?.click()
+            }}
           >
             <AiOutlineVideoCameraAdd className="w-6 h-6" />
             <span>Video</span>
           </button>
 
-          <Button className="px-7 py-2 font-medium">Share</Button>
+          <Button className="px-7 py-2 font-medium" disabled={isUploading}>Share</Button>
         </div>
       </form>
       {media && (
         <div className="relative mt-2">
           <button
-            className="bg-gray-300 p-1 rounded-full grid place-content-center absolute right-0 top-0"
+            className="bg-gray-300 p-1 rounded-full grid place-content-center absolute right-0 top-2"
             onClick={() => setMedia(null)}
+    
           >
             <HiOutlineXMark className="w-4 h-4" />
           </button>
           <img
             src={URL.createObjectURL(media)}
-            className="w-full h-[70vh] object-contain"
+            className="w-full  aspect-video object-contain"
             alt=""
           />
         </div>

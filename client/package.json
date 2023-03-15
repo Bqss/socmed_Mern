@@ -25,6 +25,7 @@
     "react-query": "^3.39.3",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.1",
+    "react-spinners": "^0.13.8",
     "react-use-effect-once": "^0.1.1"
   },
   "devDependencies": {
