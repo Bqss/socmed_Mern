@@ -1,4 +1,4 @@
-import React from "react";
+import React,{memo} from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import { GoComment } from "react-icons/go";
 import { IoPaperPlaneOutline } from "react-icons/io5";
@@ -17,7 +17,7 @@ interface PostButtonsProps extends ParentComponent{
   
 }
 
-const PostButtons = ({postData, onDetailReq, className}:PostButtonsProps) => {
+const PostButtons = memo(({postData, onDetailReq, className}:PostButtonsProps) => {
 
   const { mutateAsync: likePost, isLoading: otwLike } = useMutation(
     PostApi.likePost
@@ -60,6 +60,6 @@ const PostButtons = ({postData, onDetailReq, className}:PostButtonsProps) => {
       </button>
     </div>
   );
-};
+});
 
 export default PostButtons;

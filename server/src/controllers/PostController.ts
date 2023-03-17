@@ -18,12 +18,29 @@ export const createPost: RequestHandler = async (req, res) => {
     }
     
     await PostModel.create({
-      creator: userId,desc,media : result?.url?? null,
+      creator: userId,desc,media : { url : result?.url, media_PID: result?.public_id, media_name: result?.original_filename },
     })
 
     res.status(201).send({message: "post created successfully"})
   } catch (error) {
     res.status(500).send({message: "server error"})
+  }
+}
+
+export const deletePost : RequestHandler = async(req, res) => {
+   const {postId} = req.params;
+
+  try{
+    const postMedia = await PostModel.findById(postId); 
+    if(!postMedia) return res.sendStatus(404);
+    if(postMedia.media && postMedia.media?.media_PID){
+      await cloudinary.v2.uploader.destroy(postMedia?.media?.media_PID)
+    }
+    await PostModel.deleteOne({_id: postId});
+    res.sendStatus(200);
+  }catch(err){
+    console.log(err)
+    res.sendStatus(500);
   }
 }
 
@@ -80,8 +97,6 @@ export const deleteComment: RequestHandler = async (req, res) => {
 
   try{
     if(!await PostModel.findById(postId).countDocuments()) return res.sendStatus(404);
-      // const comment= await PostModel.findById(postId,["comments","-_id"]).where({comments : {$elemMatch :{_id : commentId }}})
-      // console.log(comment);
       await PostModel.findById(postId).updateOne({$pull : {comments: {_id: commentId}}});
       res.sendStatus(200);
     }catch(error){

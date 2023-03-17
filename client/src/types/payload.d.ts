@@ -31,7 +31,11 @@ interface NewPost {
 }
 
 interface Post {
-  media: string;
+  media: {
+    url: string,
+    media_PID: string,
+    media_name: string
+  };
   creator: string;
   desc: string;
   comments: Comment[];

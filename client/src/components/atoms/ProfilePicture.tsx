@@ -4,7 +4,8 @@ const sizes = {
   "sm" : 6,
   "md" : 8,
   "lg" : 12,
-  "xl" : 16,
+  "xl" : 24,
+
 }
 
 interface ProfilePictureProps {

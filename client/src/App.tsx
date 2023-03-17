@@ -18,7 +18,7 @@ function App() {
                 <Route path="/register" element={<Register/>}  />
                 <Route path="/" element={<MainLayout/>}>
                   <Route path="" element ={<Home/>}/>
-                  <Route path="/:id" element={<MyProfile/>} />
+                  <Route path="/:userId" element={<MyProfile/>} />
                 </Route>
               </Routes>
             </ReactQueryClientProvider>

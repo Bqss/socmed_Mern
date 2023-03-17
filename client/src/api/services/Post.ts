@@ -15,6 +15,11 @@ class PostApi {
     });
     return result.data;
   } 
+  static async deletePost ({postId}:{postId: string}) {
+
+    const result = await privateApi.delete(`/post/${postId}`);
+    return result.data;
+  } 
 
   static async getAllPost() {
     const result = await privateApi.get<Post[]>("/post");
