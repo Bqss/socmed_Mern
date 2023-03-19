@@ -10,7 +10,9 @@ interface CommentHintProps extends ParentComponent{
 }
 
 const CommentHint = ({data}:CommentHintProps) => {
-  const {data: user , isLoading} = useQuery(`user${data.userId}`,() => getUserById(data.userId));
+  const {data: user , isLoading} = useQuery([`user`,data.userId],() => getUserById(data.userId),{
+    enabled : Boolean(data.userId) 
+  });
   return (
     <div className="flex justify-between">
       <div className="flex gap-1">

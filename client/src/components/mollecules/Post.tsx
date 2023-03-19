@@ -24,7 +24,7 @@ interface PostProps {
 }
 
 const Post = ({ data }: PostProps) => {
-  const { data: creator } = useQuery<User>(`user${data.creator}`, () =>
+  const { data: creator } = useQuery<User>(["user",data.creator], () =>
     getUserById(data.creator)
   );
   const user = useSelector(getUserState);

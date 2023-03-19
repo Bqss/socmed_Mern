@@ -30,3 +30,14 @@ export const unfollowUser = async ({id}:{id: string}) => {
   const result = await privateApi.put(`user/${id}/unfollow`);
   return result.data;
 } 
+
+export const updateUserProfile = async ({id, body}:{id: string, body: {}}) => {
+  const result = await  privateApi.put(`user/${id}`,{
+    ...body
+  },{
+    headers : {
+      "Content-Type" : "multipart/form-data"
+    },
+  });
+  return result.data;
+}

@@ -30,9 +30,13 @@ expressApp.use(cookieParser());
 expressApp.use(
   fileUpload({
     useTempFiles: true,
+    tempFileDir : "/tmp/",
+    createParentPath : true,
     limits: {
       fileSize: 100 * 1024 * 1024,
     },
+    safeFileNames : true,
+
   })
 );
 expressApp.use(

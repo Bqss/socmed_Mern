@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 import { Post, User } from "../../types/payload";
 import { ModalComponent, ParentComponent } from "../../types/Props";
-
 import { Comment } from "../atoms";
 import ProfilePicture from "../atoms/ProfilePicture";
 import Likes from "../organism/Likes";

@@ -11,8 +11,11 @@ interface LikesProps {
 }
 
 const Likes = ({ dataLikes, detailToggler }: LikesProps) => {
-  const { data: commentor } = useQuery(`user${dataLikes.at(0)}`, () =>
-    getUserById(dataLikes?.at(0) || "")
+  const { data: commentor } = useQuery([`user`,dataLikes.at(0)], () =>
+    getUserById(dataLikes?.at(0)|| ""),
+    {
+      enabled : Boolean(dataLikes.at(0)) 
+    }
   );
 
   return (

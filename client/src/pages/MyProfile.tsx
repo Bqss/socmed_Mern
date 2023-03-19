@@ -17,13 +17,15 @@ import { toast } from "react-hot-toast";
 
 const MyProfile = () => {
   const { userId } = useParams();
-  const { data: userData } = useQuery(`user${userId}`, () => {
-    if (userId) return getUserById(userId);
+  const { data: userData } = useQuery([`user`,userId], () =>  getUserById(userId??""),{
+    enabled : Boolean(userId)
   });
+
   const { mutateAsync: follow, isLoading: isOtwFollow } =
     useMutation(followUser);
   const { mutateAsync: unfollow, isLoading: isOtwUnfollow } =
     useMutation(unfollowUser);
+
   const user = useSelector(getUserState);
   const queryClient = useQueryClient();
   const [isEditProfile, setIsEditProfile] = useState(false);
@@ -61,20 +63,22 @@ const MyProfile = () => {
               {userData?.firstName + "_" + userData?.lastName}
             </span>
           </div>
-          <div className="h-[30vh] bg-gray-200"></div>
+          <div className="h-[30vh] bg-gray-200">
+            {userData?.coverPicture && <img className="w-full h-full" src={userData.coverPicture}></img>}
+          </div>
           <div className="px-16 ">
             <div className="flex relative justify-between items-end -mt-12 ">
-              <ProfilePicture img={{ src: userData?.coverPicture }} size="xl" />
+              <ProfilePicture img={{ src: userData?.profilePicture  }} size="xl" />
               {slf ? (
                 <Button
                   onClick={() => setIsEditProfile(true)}
-                  className="px-5 py-2 font-medium"
+                  className="px-5 py-2 text-sm font-medium"
                 >
                   Edit Profile
                 </Button>
               ) : (
                 <Button
-                  className="px-5 py-2 font-medium"
+                  className="px-5 py-2 font-medium text-sm"
                   onClick={followHandler}
                 >
                   {followed ? "unfollow" : "follow  "}

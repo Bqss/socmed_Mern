@@ -10,7 +10,7 @@ interface CommentProps {
 }
 
 const Comment = ({ data }: CommentProps) => {
-  const { data: c } = useQuery(`user${data.userId}`, () =>
+  const { data: c } = useQuery(["user",data.userId], () =>
     getUserById(data.userId)
   );
   return (

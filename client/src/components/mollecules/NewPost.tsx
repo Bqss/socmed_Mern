@@ -17,17 +17,13 @@ const NewPost = ({ className }: { className?: string }) => {
   const [media, setMedia] = useState<any>();
   const queryClient = useQueryClient();
   const {mutate : uploadPost, isLoading: isUploading} = useMutation(PostApi.createPost);
-  // const {mutate : uploadPost, isLoading: isUploading} = useMutation(PostApi.createPost);
+
 
 
   const post = useForm({
     initialValues: {
       description: "",
-    },
-    validateInputOnChange: true,
-    validate: {
-      description: isNotEmpty("description can't be empty"),
-    },
+    }
   });
 
   
@@ -41,6 +37,7 @@ const NewPost = ({ className }: { className?: string }) => {
     uploadPost({ media, desc: values.description },{
       onSuccess : (data) => {
         setMedia(null);
+        post.reset();
         toast.success(data.message);
         queryClient.invalidateQueries("posts");
       }

@@ -2,6 +2,7 @@ import { Request, RequestHandler, Response } from "express";
 import UserModel from "./../models/UserModel.js";
 import dot from "dotenv";
 import { userInfo } from "os";
+import { uploadMedia } from "./MediaController.js";
 
 dot.config();
 const { env }: any = process;
@@ -39,7 +40,15 @@ export const getUserCrediental = async (req: Request, res: Response) => {
   try {
     const user = await UserModel.findById<any>(userId);
     if (user) {
-      const { userName, firstName, followers, following , lastName, profilePicture, _id } = user?._doc;
+      const {
+        userName,
+        firstName,
+        followers,
+        following,
+        lastName,
+        profilePicture,
+        _id,
+      } = user?._doc;
 
       res.status(200).json({
         userName,
@@ -66,7 +75,7 @@ export const getUserFollower: RequestHandler = async (req, res) => {
   const start = (cursor - 1) * limit;
 
   try {
-    const total = await UserModel.findOne({_id: userId},[
+    const total = await UserModel.findOne({ _id: userId }, [
       "followers",
       "-_id",
     ]).countDocuments();
@@ -79,11 +88,10 @@ export const getUserFollower: RequestHandler = async (req, res) => {
       .limit(limit)
       .sort({ following: "asc" });
 
-    
     res.status(200).json({
       data: followers?.followers,
       prevId: cursor > 1 ? cursor - 1 : null,
-      nextId: cursor < Math.ceil(total / limit)-1 ? cursor +1 :null,
+      nextId: cursor < Math.ceil(total / limit) - 1 ? cursor + 1 : null,
     });
   } catch (err) {
     console.log(err);
@@ -93,28 +101,40 @@ export const getUserFollower: RequestHandler = async (req, res) => {
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userId: currentId } = req.body;
-  console.log(req.body);
+  const { coverPicture, profilePicture }: any = req.files;
+
   const {
-    coverPicture,
-    profilePicture,
     about,
     livesIn,
-    relationship,
+    // relationship,
     website,
-    workAt,
+    // workAt,
   } = req.body;
   if (id === currentId) {
     try {
+      let profilePictureR, coverPictureR;
+      const tte = await UserModel.findById(currentId);
+      if (!tte) {
+        return res.sendStatus(403);
+      }
+      if (coverPicture) {
+        coverPictureR = await uploadMedia(coverPicture, currentId,{
+          replace : true
+        });
+      }
+      if (profilePicture) {
+        profilePictureR = await uploadMedia(profilePicture, currentId,{
+          replace: true
+        });
+      }
       await UserModel.findByIdAndUpdate(
         id,
         {
-          coverPicture,
-          profilePicture,
+          coverPicture: coverPictureR?.url,
+          profilePicture: profilePictureR?.url,
           about,
           livesIn,
-          relationship,
           website,
-          workAt,
         },
         {
           new: true,
@@ -122,7 +142,7 @@ export const updateUser = async (req: Request, res: Response) => {
       );
       res.status(200).json({ message: "success updating" });
     } catch (err) {
-      res.status(500).json({ error: err });
+      res.sendStatus(500);
     }
   } else {
     res.status(403).json({ message: "Can't update another's profile" });

@@ -5,6 +5,8 @@ import {AiOutlineSetting} from "react-icons/ai";
 import {IoMdNotificationsOutline} from "react-icons/io";
 import {HiOutlineChatBubbleLeftEllipsis,HiOutlineHome} from "react-icons/hi2";
 import {RxAvatar} from "react-icons/rx";
+import { useSelector } from 'react-redux';
+import { getUserState } from '../slices/UserSlice';
 
 
 
@@ -14,6 +16,7 @@ const base = "hover:text-button-grad2 transition-colors duration-150"
 
 
 const Navbar = () => {
+  const {value} = useSelector(getUserState);
   return (
     <div className='flex mx-5 justify-between items-center  py-4 '>
       <Search className='basis-80'/>
@@ -21,7 +24,7 @@ const Navbar = () => {
         <NavLink to={"/"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
           <HiOutlineHome className='w-6 h-6'/>
         </NavLink>
-        <NavLink to={"/:username"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
+        <NavLink to={"/"+value._id} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
           <RxAvatar className='w-6 h-6'/>
         </NavLink>
         <NavLink to={"/setting"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>

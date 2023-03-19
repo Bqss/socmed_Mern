@@ -14,7 +14,7 @@ const Following = ({ id }: FollowingProps) => {
   const { value: user } = useSelector(getUserState);
   const queryClient = useQueryClient();
   const isFollowed = user.following?.includes(id);
-  const { data, isLoading } = useQuery(`user${id}`, () => getUserById(id));
+  const { data, isLoading } = useQuery(["user",id], () => getUserById(id));
   const { mutateAsync: tryFollow, isLoading: onFollowing,  } = useMutation(
     ({ id }: { id: string }) =>
       isFollowed ? unfollowUser({ id }) : followUser({ id }),

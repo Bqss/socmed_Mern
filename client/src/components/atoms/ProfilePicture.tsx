@@ -19,7 +19,8 @@ interface ProfilePictureProps {
 
 const ProfilePicture = ({img , size ="md", className}:ProfilePictureProps) => {
   return (
-    img.src ? <img src={img.src} alt={img.alt ?? ""} className={`rounded-full w-${sizes[size]} h-${sizes[size]} `+className} /> : 
+    img.src ? <img src={img.src} alt={img.alt ?? ""} className={`rounded-full object-cover
+    w-${sizes[size]} h-${sizes[size]} `+className} /> : 
     <div className={`bg-gray-100 rounded-full w-${sizes[size]} h-${sizes[size]} ` + className}></div>
   )
 }
