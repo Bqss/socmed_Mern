@@ -17,7 +17,7 @@ interface PostButtonsProps extends ParentComponent{
   
 }
 
-const PostButtons = memo(({postData, onDetailReq, className}:PostButtonsProps) => {
+const   PostButtons = memo(({postData, onDetailReq, className}:PostButtonsProps) => {
 
   const { mutateAsync: likePost, isLoading: otwLike } = useMutation(
     PostApi.likePost
@@ -25,9 +25,9 @@ const PostButtons = memo(({postData, onDetailReq, className}:PostButtonsProps) =
   const { mutateAsync: unlikePost, isLoading: otwUnlike } = useMutation(
     PostApi.unlikePost
   );
-  const user = useSelector(getUserState);
+  const {crediental: user} = useSelector(getUserState);
   const queryClient = useQueryClient();
-  const liked = isLiked({ PostData: postData, userId: user.value._id });
+  const liked = isLiked({ PostData: postData, userId: user._id ||""});
 
   const likeHandler = async (event: React.MouseEvent) => {
     event.preventDefault();

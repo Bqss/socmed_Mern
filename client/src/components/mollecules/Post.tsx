@@ -27,12 +27,12 @@ const Post = ({ data }: PostProps) => {
   const { data: creator } = useQuery<User>(["user",data.creator], () =>
     getUserById(data.creator)
   );
-  const user = useSelector(getUserState);
+  const {crediental:user} = useSelector(getUserState);
   const { mutate: deletePost } = useMutation(PostApi.deletePost);
   const queryClient = useQueryClient();
   const [isOpenDetail, setIsOpenDetail] = useState<boolean>(false);
 
-  const slf = isSelf({ currentId: data.creator, userId: user?.value._id });
+  const slf = isSelf({ currentId: data.creator, userId: user?._id || "" });
 
   const deleteHandler = () => {
     deletePost(

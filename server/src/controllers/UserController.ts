@@ -101,7 +101,6 @@ export const getUserFollower: RequestHandler = async (req, res) => {
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { userId: currentId } = req.body;
-  const { coverPicture, profilePicture }: any = req.files;
 
   const {
     about,
@@ -117,13 +116,13 @@ export const updateUser = async (req: Request, res: Response) => {
       if (!tte) {
         return res.sendStatus(403);
       }
-      if (coverPicture) {
-        coverPictureR = await uploadMedia(coverPicture, currentId,{
+      if (req.files && req.files.coverPicture) {
+        coverPictureR = await uploadMedia(req.files.coverPicture, currentId,{
           replace : true
         });
       }
-      if (profilePicture) {
-        profilePictureR = await uploadMedia(profilePicture, currentId,{
+      if (req.files && req.files.profilePicture) {
+        profilePictureR = await uploadMedia(req.files.profilePicture, currentId,{
           replace: true
         });
       }

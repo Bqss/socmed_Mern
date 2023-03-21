@@ -1,19 +1,44 @@
-import React from 'react'
-import { ParentComponent } from '../../types/Props'
+import React from "react";
+import { ButtonProps, ParentComponent } from "../../types/Props";
 
+const buttonType = {
+  btn1: "bg-gradient-to-r text-white from-button-grad1 to-button-grad2 border-transparent hover:border-orange hover:from-orange-400 hover:to-orange-600 ",
+  btn2: "bg-gray-200  hover:bg-gray-300 text-black",
+};
 
-interface ButtonProps extends ParentComponent{
-  onClick? : (ev: React.MouseEvent) => void,
-  disabled?: boolean,
-  type?: "submit"
-}
+const buttonDefaultStyle = {
+  base: "transition-colors duration-150 border rounded-lg ",
+};
 
-const Button = ({className, children, onClick, disabled, type}:ButtonProps) => {
+const Button = ({
+  className,
+  children,
+  loading = false,
+  disableWhenLoading = false,
+  disabled,
+  LoadingIcon,
+  styleType = "btn1",
+  classNames,
+  ...rest
+}: ButtonProps) => {
   return (
-    <button className={["bg-gradient-to-r from-button-grad1 to-button-grad2  border border-transparent text-white rounded-lg hover:border-orange hover:from-transparent hover:to-transparent hover:text-black ",className].join(" ")} onClick={onClick} disabled={disabled} type={type}>
-      {children}
+    <button
+      className={[
+        buttonDefaultStyle.base || classNames?.base,
+        buttonType[styleType],
+        className,
+      ].join(" ")}
+      
+      disabled={(disableWhenLoading && loading)|| disabled}
+      {...rest}
+    >
+      {loading ? (
+        <div className="h-full flex items-center ">
+          {  LoadingIcon }
+        </div>
+      ): children}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

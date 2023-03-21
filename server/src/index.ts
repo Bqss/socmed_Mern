@@ -12,6 +12,8 @@ import { AuthRoute } from "./routes/AuthRoute.js";
 import { UserRoute } from "./routes/UserRoute.js";
 import { postRoute } from "./routes/PostRoute.js";
 import authMiddleware from "./middleware/AuthMiddleware.js";
+import { chatRoute } from "./routes/ChatRoute.js";
+import { msgRoute } from "./routes/MessageRoute.js";
 // import { mediaRoute } from "./routes/MediaRoute.js";
 
 dot.config();
@@ -50,6 +52,8 @@ expressApp.use(
 expressApp.use("/auth", AuthRoute);
 expressApp.use("/user", UserRoute);
 expressApp.use("/post", authMiddleware, postRoute);
+expressApp.use("/chat", authMiddleware, chatRoute);
+expressApp.use("/message", authMiddleware, msgRoute);
 // expressApp.use("/media", mediaRoute)
 
 mongoose.set("strictQuery", false);

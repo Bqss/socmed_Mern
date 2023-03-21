@@ -16,7 +16,7 @@ const base = "hover:text-button-grad2 transition-colors duration-150"
 
 
 const Navbar = () => {
-  const {value} = useSelector(getUserState);
+  const {crediental} = useSelector(getUserState);
   return (
     <div className='flex mx-5 justify-between items-center  py-4 '>
       <Search className='basis-80'/>
@@ -24,7 +24,7 @@ const Navbar = () => {
         <NavLink to={"/"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
           <HiOutlineHome className='w-6 h-6'/>
         </NavLink>
-        <NavLink to={"/"+value._id} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
+        <NavLink to={"/"+crediental._id} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>
           <RxAvatar className='w-6 h-6'/>
         </NavLink>
         <NavLink to={"/setting"} className={({isActive})=> isActive ?[base,active].join(" ") : base  }>

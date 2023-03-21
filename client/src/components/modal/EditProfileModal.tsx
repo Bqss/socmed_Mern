@@ -1,13 +1,14 @@
 import React, { useRef, useState } from "react";
 import { Modal } from "@mantine/core";
 import { ModalComponent } from "../../types/Props";
-import {} from "react-icons/ai";
+import {ClipLoader} from "react-spinners"
 import { HiXMark } from "react-icons/hi2";
 import { Button } from "../atoms";
 import { BiImageAdd } from "react-icons/bi";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getUserById, updateUserProfile } from "../../api/services/User";
 import { useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const EditProfileModal = ({ className, isOpen, onClose }: ModalComponent) => {
   const queryClient = useQueryClient();
@@ -17,6 +18,8 @@ const EditProfileModal = ({ className, isOpen, onClose }: ModalComponent) => {
   });
   const editProfile = useMutation(updateUserProfile, {
     onSuccess() {
+      toast.success("successfully update profile");
+      onClose();
       queryClient.invalidateQueries(["user", userId]);
       queryClient.invalidateQueries(["userData"]);
     },
@@ -26,7 +29,7 @@ const EditProfileModal = ({ className, isOpen, onClose }: ModalComponent) => {
   const [name, setName] = useState("");
   const [about, setAbout] = useState(user.data?.about);
   const [livesIn, setLivesIn] = useState(user.data?.livesIn);
-  const [website, setWebsite] = useState("");
+  const [website, setWebsite] = useState(user.data?.website);
   const profileInput = useRef<HTMLInputElement>(null);
   const coverInput = useRef<HTMLInputElement>(null);
 
@@ -54,6 +57,9 @@ const EditProfileModal = ({ className, isOpen, onClose }: ModalComponent) => {
           </div>
           <Button
             className="px-6 py-1 font-medium "
+            disableWhenLoading ={true}
+            loading = { editProfile.isLoading}
+            LoadingIcon ={ <ClipLoader size={18} color={ "fff"} />}
             onClick={(ev) => {
               ev.preventDefault();
               userId &&
@@ -88,7 +94,7 @@ const EditProfileModal = ({ className, isOpen, onClose }: ModalComponent) => {
             <img
               src={
                 (coverPicture ? URL.createObjectURL(coverPicture) : null) ||
-                user.data?.profilePicture
+                user.data?.coverPicture
               }
               alt=""
               className="bg-transparent w-full h-full object-cover"
@@ -118,7 +124,7 @@ const EditProfileModal = ({ className, isOpen, onClose }: ModalComponent) => {
                 src={
                   (profilePicture
                     ? URL.createObjectURL(profilePicture)
-                    : null) || user.data?.coverPicture
+                    : null) || user.data?.profilePicture
                 }
                 alt=""
                 className="w-24 h-24 rounded-full object-cover "

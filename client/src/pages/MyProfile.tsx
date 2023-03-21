@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { MainContent } from "../layout";
 import { BiArrowBack } from "react-icons/bi";
 import { Button } from "../components/atoms";
-import { BsCalendar2Date } from "react-icons/bs";
+import { BsCalendar2Date, BsLink45Deg } from "react-icons/bs";
 import { Tabs } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 import EditProfileModal from "../components/modal/EditProfileModal";
@@ -14,38 +14,42 @@ import { isFollowed, isSelf } from "../utils";
 import { useSelector } from "react-redux";
 import { getUserState } from "../slices/UserSlice";
 import { toast } from "react-hot-toast";
+import { IoLocationOutline } from "react-icons/io5";
 
 const MyProfile = () => {
   const { userId } = useParams();
-  const { data: userData } = useQuery([`user`,userId], () =>  getUserById(userId??""),{
-    enabled : Boolean(userId)
-  });
+  const { data: userData } = useQuery(
+    [`user`, userId],
+    () => getUserById(userId ?? ""),
+    {
+      enabled: Boolean(userId),
+    }
+  );
 
   const { mutateAsync: follow, isLoading: isOtwFollow } =
     useMutation(followUser);
   const { mutateAsync: unfollow, isLoading: isOtwUnfollow } =
     useMutation(unfollowUser);
 
-  const user = useSelector(getUserState);
+  const { crediental: user } = useSelector(getUserState);
   const queryClient = useQueryClient();
   const [isEditProfile, setIsEditProfile] = useState(false);
   const { month, year } = useMoment(userData?.createdAt);
-  const slf = isSelf({ currentId: userId, userId: user.value._id });
-  const followed = userData && userId && isFollowed({ userData, userId: user.value._id });
+  const slf = isSelf({ currentId: userId, userId: user._id || "" });
+  const followed =
+    userData && userId && isFollowed({ userData, userId: user._id ?? "" });
 
   const closeModal = () => {
     setIsEditProfile(false);
   };
 
-  const followHandler = async() => {
-    
+  const followHandler = async () => {
     try {
-      userId && await (!followed ? follow({ id: userId }): unfollow({id: userId}));
+      userId &&
+        (await (!followed ? follow({ id: userId }) : unfollow({ id: userId })));
       queryClient.invalidateQueries(`user${userId}`);
-      toast.success("success "+(followed ? "unfollow" : "follow"));
-    } catch (err) {
-      
-    }
+      toast.success("success " + (followed ? "unfollow" : "follow"));
+    } catch (err) {}
   };
 
   const [activeTab, setActiveTab] = useState<string | null>("tweets");
@@ -64,11 +68,16 @@ const MyProfile = () => {
             </span>
           </div>
           <div className="h-[30vh] bg-gray-200">
-            {userData?.coverPicture && <img className="w-full h-full" src={userData.coverPicture}></img>}
+            {userData?.coverPicture && (
+              <img className="w-full h-full" src={userData.coverPicture}></img>
+            )}
           </div>
           <div className="px-16 ">
             <div className="flex relative justify-between items-end -mt-12 ">
-              <ProfilePicture img={{ src: userData?.profilePicture  }} size="xl" />
+              <ProfilePicture
+                img={{ src: userData?.profilePicture }}
+                size="xl"
+              />
               {slf ? (
                 <Button
                   onClick={() => setIsEditProfile(true)}
@@ -92,11 +101,26 @@ const MyProfile = () => {
               <span className="text-gray-500 ">
                 {"@" + userData?.firstName + "_" + userData?.lastName}
               </span>
-              <div className="flex items-center gap-3">
-                <BsCalendar2Date />
-                <span>
-                  Joined {month} {year}
-                </span>
+              <p className="mt-2">{userData?.about}</p>
+              <div className="flex gap-4">
+                <div className="flex items-center gap-2">
+                  <BsCalendar2Date />
+                  <span>
+                    Joined {month} {year}
+                  </span>
+                </div>
+                {userData?.livesIn && <div className="flex items-center gap-2">
+                  <IoLocationOutline />
+                  <span>
+                  {userData?.livesIn}
+                  </span>
+                </div>}
+                {userData?.website && <div className="flex items-center gap-2">
+                  <BsLink45Deg />
+                  <a target={"_blank"} href={"https://"+userData?.website}>
+                    {userData?.website}
+                  </a>
+                </div>}
               </div>
               <div className="flex gap-5 mt-3">
                 <span className="text-gray-500">

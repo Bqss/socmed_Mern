@@ -1,6 +1,8 @@
 
 import { useQuery } from "react-query";
-import { getUserCrediental, getUserFollower } from "../../api/services/User";
+import { useSelector } from "react-redux";
+import { getUserById, getUserCrediental, getUserFollower } from "../../api/services/User";
+import { getUserState } from "../../slices/UserSlice";
 
 import { ParentComponent } from "../../types/Props";
 import { Following } from "../atoms";
@@ -10,7 +12,8 @@ interface FollowingsProps extends ParentComponent {
 }
 
 const Followings = ({ className, openModal }: FollowingsProps) => {
-  const {data : followers, isLoading} = useQuery(["userFollowers"],async() => getUserFollower({limit:4}));
+  const {crediental: user} = useSelector(getUserState);
+  const {data : userData, isLoading} = useQuery(["user",user._id],() => getUserById(user._id||""));
 
   
 
@@ -20,18 +23,18 @@ const Followings = ({ className, openModal }: FollowingsProps) => {
       {isLoading ? (
         <div>loading...</div>
       ): (
-        !(followers?.data?.length??0  > 0) ? (
+        !(userData?.followers?.length??0  > 0) ? (
           <div className="min-h-[10rem] flex justify-center items-center px-5 bg-white mt-5 rounded-xl shadow-md shadow-black/10">
             <span>no one following you</span>
           </div>
         ) : (
           <>
             <div className="flex flex-col gap-4 mt-4">
-              {followers?.data?.map((follo: any, i: number) => (
+              {userData?.followers?.map((follo: any, i: number) => (
                 <Following id={follo} key={i} />
               ))}
             </div>
-            <button className="text-orange font-bold mt-6" onClick={openModal}>
+            <button className="text-orange text-sm font-bold mt-6" onClick={openModal}>
               Show more
             </button>
           </>

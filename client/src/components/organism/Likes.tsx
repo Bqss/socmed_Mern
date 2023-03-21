@@ -21,7 +21,7 @@ const Likes = ({ dataLikes, detailToggler }: LikesProps) => {
   return (
     <div className="flex items-center gap-1">
       <div className="">
-        <ProfilePicture img={{src: commentor?.coverPicture}} size="sm"/>
+        <ProfilePicture img={{src: commentor?.profilePicture}} size="sm"/>
       </div>
       <span className="text-gray-400 ">
         Liked by <Link className="font-bold text-gray-400" to={`${dataLikes.at(0)}`}>{ commentor?.userName}</Link>

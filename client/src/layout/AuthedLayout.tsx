@@ -13,10 +13,12 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Background from "../components/mollecules/Background";
 import { useQuery } from "react-query";
-import { getUserCrediental } from "../api/services/User";
+import { getUserById, getUserCrediental } from "../api/services/User";
 import { AxiosResponse } from "axios";
 import { setUser } from "../slices/UserSlice";
 import { ProfileHint } from "../components/mollecules";
+import { useEffectOnce } from "react-use-effect-once";
+import useLocalStorage from "../hooks/userLocalStorage";
 
 interface LayoutProps extends ParentComponent {
   withNavbar?: boolean;
@@ -28,14 +30,19 @@ const AuthedLayout = ({
   withSidebar = true,
   children,
 }: LayoutProps) => {
-  const dispatch = useDispatch();
-  const { isLoading, isFetching } = useQuery("userData", getUserCrediental, {
-    onSuccess(data) {
-      dispatch(setUser({ user: data }));
-    },
-  });
+  const dispatch = useDispatch()
+  
   const [isOpenNewPostModal, setIsOpenNewPostModal] = useState(false);
   const [isOpenFollowingModal, setIsOpenFollowingModal] = useState(false);
+  const userID = useLocalStorage("BM_usid");
+  useQuery(["user",userID],() => getUserById(userID??""),{
+    enabled : Boolean(userID),
+    onSuccess : (response) => {
+      console.log(response)
+      dispatch(setUser({...response}))
+    }
+  })
+  
 
   const closeModal = () => {
     setIsOpenNewPostModal(false);

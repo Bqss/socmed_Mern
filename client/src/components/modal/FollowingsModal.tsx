@@ -10,13 +10,11 @@ const FollowingsModal = ({ isOpen, onClose, className }: ModalComponent) => {
 
   const {ref, inView} = useInView()
 
-  const {data : followings , isLoading , hasNextPage} = useInfiniteQuery("followers",({pageParam= 1}) => getUserFollower({pageParam,limit: 4}),{
+  const {data : followings , isLoading , hasNextPage} = useInfiniteQuery(["followers"],({pageParam= 1}) => getUserFollower({pageParam,limit: 4}),{
     getNextPageParam : (lastPage) => lastPage.nextId ??undefined,
     getPreviousPageParam : (firstPage) => firstPage.prevId ??undefined,
     
   });
-
-
 
   return (
     <Modal
@@ -40,7 +38,7 @@ const FollowingsModal = ({ isOpen, onClose, className }: ModalComponent) => {
               ))
             )}
           </div>
-          <button className="text-orange font-bold mt-6" disabled={!hasNextPage}>Show more</button>
+          <button className="text-orange font-bold mt-6 text-sm" disabled={!hasNextPage}>Show more</button>
         </div>
       </div>
     </Modal>

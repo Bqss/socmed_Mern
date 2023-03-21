@@ -1,23 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { getUserById, getUserCrediental } from "../api/services/User";
 import { RootState } from "../store";
+import { User } from "../types/payload";
 
-const initialState: any = {
-  value : {},
+const initialState : {crediental : Partial<User>} = {
+  crediental : {
+
+  }
 };
 
 const userSlice = createSlice({
   name: "user ",
   initialState,
   reducers: {
-    setUser: (state, action) => {
-      const { user } = action.payload;
-      state.value = { ...user };
+    setUser: (state, {payload}: {payload : Partial<User>}) => {
+      state.crediental = { ...payload };
     },
 
     resetUser: (state, action) => {
-      state.value = {};
+      state.crediental = {
+      };
     },
   },
 });

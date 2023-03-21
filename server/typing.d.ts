@@ -14,6 +14,7 @@
   relationship?: "married" | "single" | undefined
   following : Array<string>,
   followers : Array<string>,
+  website: string,
   createdAt : string,
   updatedAt : string
  }

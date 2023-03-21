@@ -5,13 +5,14 @@ import toast from "react-hot-toast";
 import { followUser, getUserById, unfollowUser } from "../../api/services/User";
 import { getUserState } from "../../slices/UserSlice";
 import { Button } from "./../atoms";
+import { ClipLoader } from "react-spinners";
 
 interface FollowingProps {
   id: string;
 }
 
 const Following = ({ id }: FollowingProps) => {
-  const { value: user } = useSelector(getUserState);
+  const { crediental: user } = useSelector(getUserState);
   const queryClient = useQueryClient();
   const isFollowed = user.following?.includes(id);
   const { data, isLoading } = useQuery(["user",id], () => getUserById(id));
@@ -20,7 +21,7 @@ const Following = ({ id }: FollowingProps) => {
       isFollowed ? unfollowUser({ id }) : followUser({ id }),
     {
       async onSuccess(data) {
-        await queryClient.invalidateQueries("userData");
+        await queryClient.invalidateQueries(["user", user._id]);
         toast.success(data.message);
       },
     }
@@ -50,8 +51,12 @@ const Following = ({ id }: FollowingProps) => {
         </div>
       </div>
       <Button
-        className="px-6 py-2 text-white font-medium text-sm "
+        className="px-6 py-2 font-medium text-sm "
         onClick={() => tryFollow({ id })}
+        styleType={!isFollowed ? "btn1":"btn2"}
+        disableWhenLoading = {true}
+        loading = {onFollowing}
+        LoadingIcon = {<ClipLoader size={18} color={isFollowed ? "#000" : "fff"} />}
       >
         {!isFollowed ? "follow" : "unfollow"}
       </Button>

@@ -1,4 +1,4 @@
-import MainLayout from "../layout/AuthedLayout";
+
 import toast from "react-hot-toast";
 import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,11 +9,14 @@ import { isNotEmpty, useForm } from "@mantine/form";
 import { TextInput } from "@mantine/core";
 
 import GuestLayout from "../layout/GuestLayout";
+import { useDispatch } from "react-redux";
+import { setUser } from "../slices/UserSlice";
 
 
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const test = useForm({
     initialValues: {
       userName: "",
@@ -26,7 +29,8 @@ const Login = () => {
     },
   });
   const { mutate: tryLogin } = useMutation(login, {
-    onSuccess() {
+    onSuccess(data) {
+      localStorage.setItem("BM_usid",data.userId)
       navigate("/",{replace: true});
     },
     onError(error: any) {

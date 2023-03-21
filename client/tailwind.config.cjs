@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       colors: {
 
-        orange: "#fca61f",
+        // orange: "#fca61f",
         black: "#242d49",
 
         //   "profileShadow": 0px 4px 17px 2px "rgba(0, 0, 0, 0.25)",
