@@ -11,7 +11,7 @@ const useMoment = (date : string | undefined) => {
     day: dateM?.format("ddd"),
     month: dateM?.format("MMMM"),
     year: dateM?.format("YYYY"),
-    relative : dateM?.startOf("day").fromNow()
+    relative : dateM?.startOf("second").fromNow()
   }
 }
 

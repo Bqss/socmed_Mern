@@ -4,7 +4,8 @@ const sizes = {
   "sm" : 6,
   "md" : 8,
   "lg" : 12,
-  "xl" : 24,
+  "xl" : 16,
+  "2xl" : 24,
 
 }
 
@@ -13,7 +14,7 @@ interface ProfilePictureProps {
     src : string |undefined,
     alt? : string
   },
-  size? : "sm"| "md" | "lg" | "xl" ,
+  size? : "sm"| "md" | "lg" | "xl" | "2xl" ,
   className? : string
 }
 

@@ -76,7 +76,7 @@ const NewPost = ({ className }: { className?: string }) => {
             type="file"
             className="w-0 h-0"
             name=""
-            accept="image/png, image/jpg"
+            accept="image/png"
             onChange={handleMediaChange}
             ref={imageInput}
           />

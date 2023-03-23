@@ -1,4 +1,5 @@
 import React from "react";
+import { ClipLoader } from "react-spinners";
 import { ButtonProps, ParentComponent } from "../../types/Props";
 
 const buttonType = {
@@ -16,7 +17,7 @@ const Button = ({
   loading = false,
   disableWhenLoading = false,
   disabled,
-  LoadingIcon,
+  LoadingIcon = <ClipLoader size={18} color={ "fff"} />,
   styleType = "btn1",
   classNames,
   ...rest

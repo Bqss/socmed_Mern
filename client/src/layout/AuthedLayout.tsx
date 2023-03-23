@@ -38,7 +38,6 @@ const AuthedLayout = ({
   useQuery(["user",userID],() => getUserById(userID??""),{
     enabled : Boolean(userID),
     onSuccess : (response) => {
-      console.log(response)
       dispatch(setUser({...response}))
     }
   })

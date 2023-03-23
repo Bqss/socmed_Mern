@@ -76,7 +76,7 @@ const MyProfile = () => {
             <div className="flex relative justify-between items-end -mt-12 ">
               <ProfilePicture
                 img={{ src: userData?.profilePicture }}
-                size="xl"
+                size="2xl"
               />
               {slf ? (
                 <Button
@@ -117,7 +117,7 @@ const MyProfile = () => {
                 </div>}
                 {userData?.website && <div className="flex items-center gap-2">
                   <BsLink45Deg />
-                  <a target={"_blank"} href={"https://"+userData?.website}>
+                  <a target={"_blank"} className="text-blue-500" href={"https://"+userData?.website}>
                     {userData?.website}
                   </a>
                 </div>}

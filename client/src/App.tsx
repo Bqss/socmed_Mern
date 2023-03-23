@@ -1,10 +1,13 @@
-import { BrowserRouter, Route,  Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import { MantineProvider } from "@mantine/core";
 import store from "./store";
 import ReactQueryClientProvider from "./providers/ReactQueryClientProvider";
-import { Home, Login, MyProfile, Register } from "./pages";
+import { ChatPage, Home, Login, MyProfile, Register } from "./pages";
 import MainLayout from "./layout/AuthedLayout";
+import ChatLayout from "./layout/ChatLayout";
+import BlankChats from "./components/atoms/BlankChats";
+import Chats from "./components/organism/Chats";
 
 function App() {
   return (
@@ -14,11 +17,15 @@ function App() {
           <BrowserRouter>
             <ReactQueryClientProvider>
               <Routes>
-                <Route path="/login" element={<Login/>}  />
-                <Route path="/register" element={<Register/>}  />
-                <Route path="/" element={<MainLayout/>}>
-                  <Route path="" element ={<Home/>}/>
-                  <Route path="/:userId" element={<MyProfile/>} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/" element={<MainLayout />}>
+                  <Route path="" element={<Home />} />
+                  <Route path="/:userId" element={<MyProfile />} />
+                </Route>
+                <Route path="/" element={<ChatLayout />}>
+                  <Route path="chat" element={<BlankChats/>} />
+                  <Route path="chat/:chatId" element={<Chats/>} />
                 </Route>
               </Routes>
             </ReactQueryClientProvider>
@@ -28,7 +35,6 @@ function App() {
     </div>
   );
 }
-
 
 // <ReactQueryClientProvider>
 //             {/* <RouterProvider router={route} /> */}

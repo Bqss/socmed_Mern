@@ -22,7 +22,6 @@ const Following = ({ id }: FollowingProps) => {
     {
       async onSuccess(data) {
         await queryClient.invalidateQueries(["user", user._id]);
-        toast.success(data.message);
       },
     }
   );

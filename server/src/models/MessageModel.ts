@@ -1,12 +1,10 @@
 import { model, Schema } from "mongoose";
 
-const messageModel = new Schema({
-  chatId: String,
+export const messageSchema =  new Schema({
   senderId: String,
   receiverId: String,
-  message : String,
+  message: String
 },{
-  timestamps : true
+  timestamps: true
 })
 
-export default model("message",messageModel);

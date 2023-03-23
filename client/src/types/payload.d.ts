@@ -20,6 +20,11 @@ interface User {
   updatedAt: string;
 }
 
+interface Timestamp{
+  createdAt : string,
+  updatedAt : string
+}
+
 interface PaginatedResult<T> {
   data: T[];
   nextId: number;
@@ -54,5 +59,22 @@ interface Comment {
   updatedAt: string;
   replyComment: [];
 }
+
+interface Chat extends Timestamp{
+  _id: string,
+  owner: string,
+  contactId : string,
+  messages : Array<Message>
+}
+
+interface Message extends Timestamp{
+  _id: string,
+  senderId: string,
+  receiverId : string,
+  message: string
+}
+
+
+
 //  type Followers = Array<User>
 //  type Following = Array<User

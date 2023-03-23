@@ -51,7 +51,6 @@ const Login = () => {
 
   return (
     <GuestLayout >
-      
       <div className="w-full flex items-center h-screen justify-center space-x-10">
         <div className="flex items-center gap-4">
           <img src={logo} alt="" />
